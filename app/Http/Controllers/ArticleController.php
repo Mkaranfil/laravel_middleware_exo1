@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -14,7 +16,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('/pages/article');
+        $article=Article::all();
+        $user=User::all();
+        return view('/pages/article', compact('article','user'));
     }
 
     /**
@@ -27,15 +31,17 @@ class ArticleController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+
+        $store=new Article();
+        $store->titre=$request->titre;
+        $store->texte=$request->texte;
+        $store->user_id=Auth::id();
+        $store->save();
+        return redirect()->back()->with('status', "Votre article à été ajoute");
+
+        
     }
 
     /**
@@ -55,21 +61,21 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Article $article)
+    public function edit($id)
     {
-        //
+        $edit=Article::find($id);
+        return view('edit/articleEdit',compact('edit'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Article $article)
+  
+    public function update(Request $request,$id)
     {
-        //
+        $update=Article::find($id);
+        $update->titre=$request->titre;
+        $update->texte=$request->texte;
+        $update->user_id=Auth::id();
+        $update->save();
+        return redirect()->back()->with('edit',"votre article a bien ete modifie");
     }
 
     /**
@@ -78,8 +84,10 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy($id)
     {
-        //
+        $destroy=Article::find($id);
+        $destroy->delete();
+        return redirect()->back()->with('delete',"votre article a ete supprime");
     }
 }

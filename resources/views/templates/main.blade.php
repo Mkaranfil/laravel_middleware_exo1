@@ -42,7 +42,7 @@
             <a href="/articles">Article</a>
             <a href="/backoffices">Backoffice</a>
         </div>
-        <div class="col-8 text-center" style="text-decoration: underline">
+        <div class="col-8">
             @yield('content')
         </div>
     </div>

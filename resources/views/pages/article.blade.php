@@ -2,6 +2,6 @@
 
 @section('content')
 
-        <h1>Article</h1>    
+        @include('partials/articleP')  
     
 @endsection
