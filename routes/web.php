@@ -26,4 +26,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('accueils',AccueilController::class);
 Route::resource('articles', ArticleController::class)->middleware('isConnected');
-Route::resource('backoffices', BackofficeController::class)->middleware('isConnected');
+Route::resource('backoffices', BackofficeController::class);
